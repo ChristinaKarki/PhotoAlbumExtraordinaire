@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html data-ng-app="myApp" lang="en">
+    <head>
+        <link rel="stylesheet" type="text/css" href="../styles/album.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </head>
+
+    <body data-ng-controller="albumController">
+        <nav class="navbar navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../../index.html"><span class="glyphicon glyphicon-home"></span> Home </a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#about">ABOUT</a></li>
+                        <li><a href="#contact">CONTACT</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <h2 class="photoHeaderMargin well"><span class="glyphicon glyphicon-picture"></span><span> Photos </span>
+                <input type="file"  id="fileLoader"  />
+                <button type="button" class="btn btn-default pull-right" data-ng-click="showFileSelector()">
+                    <span class="glyphicon glyphicon-plus-sign"></span> Add Photos
+                </button>
+                <button class="btn btn-default pull-right" data-ng-click="editAlbum()">
+                    <span class="glyphicon glyphicon glyphicon-edit"></span> Edit
+                </button>
+            </h2>
+
+            <h3 data-ng-if="!editAlbumMode" class="albumTitleBlock">{{albumTitle}}</h3>
+            <h3 data-ng-if="editAlbumMode" class="albumTitleBlock">
+                <input type="text" name="albumTitle" data-ng-model="albumTitle" style="width:400px">
+                <button class="btn btn-primary" data-ng-click="saveEditAlbum()">
+                    <span class="glyphicon glyphicon-ok-sign"></span> Save
+                </button>
+                <button class="btn" data-ng-click="cancelEdit()">Cancel
+                </button>
+            </h3>
+            <form class="navbar-form" role="search">
+                <div class="input-group add-on">
+                    <input class="form-control" placeholder="Search By Title" name="srch-term" id="srch-term" type="text" data-ng-model="searchPhotoByTitle">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-sm-3 photoDiv" data-ng-repeat="photo in photosInSelectedAlbums | filter: searchPhotoByTitle">
+                    <img id="myImg" class="img-thumbnail" data-ng-src={{photo.thumbnailUrl}} alt={{photo.title}} width="300" height="200"
+                         data-ng-click="onPhotoClick(photo)" />
+                    <div class='photoCaption' data-ng-click="onPhotoClick(photo)">
+                        {{photo.title}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <span class="close">&times;</span>
+            <img class="modal-content" id="img01">
+            <div id="caption">
+                <span id="title"></span><br/>
+                <button class="btn btn-primary" data-ng-click="deletePhoto()">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <button class="btn btn-info" data-ng-click="showSavePanel()">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <div data-ng-show="showEditPhotoTitlePanel">
+                    <input type="text" class="photoTitle" data-ng-model="photoTitle"/>
+                    <button class="btn btn-info" data-ng-click="editPhoto(photoTitle)">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="../app.js"></script>
+        <script src="../controllers/albumController.js"></script>
+        <script src="../services/photoAlbumService.js"></script>
+    </body>
+</html>
